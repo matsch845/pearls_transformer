@@ -1,0 +1,2 @@
+model_checkpoint_path: "outcome_oriented_ckpt"
+all_model_checkpoint_paths: "outcome_oriented_ckpt"
