@@ -1,4 +1,10 @@
 venv
 .DS_Store
 .idea/
-datasets
+datasets*
+results/
+models/*
+.data*
+.out*
+*nohup_*
+__py*
