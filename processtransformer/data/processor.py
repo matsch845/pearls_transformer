@@ -4,7 +4,9 @@ import pandas as pd
 import numpy as np
 import datetime
 import pm4py
+import random
 from multiprocessing import Pool
+from sklearn.utils import resample
 
 from ..constants import Task, Dataset
 
@@ -46,6 +48,8 @@ class LogsDataProcessor:
     def _load_bpic_df(self, sort_temporally=False):
         df = pd.read_csv(self._filepath)
 
+        print("DF loaded")
+
         # df = df[self._org_columns]
         # df.columns = ["case:concept:name",
         #              "concept:name", "time:timestamp"]
@@ -80,7 +84,10 @@ class LogsDataProcessor:
         val = range(len(keys))
 
         coded_activity = dict({"x_word_dict": dict(zip(keys, val))})
-        code_activity_normal = dict({"y_word_dict": dict(zip(activities, range(len(activities))))})
+        #code_activity_normal = dict({"y_word_dict": dict(zip(activities, range(len(activities))))})
+
+        y_s = set(map(lambda x: activities[x].split('-')[0], range(len(activities))))
+        code_activity_normal = dict({"y_word_dict": dict(zip(y_s, range(len(y_s))))})
 
         coded_activity.update(code_activity_normal)
         coded_json = json.dumps(coded_activity)
@@ -229,16 +236,18 @@ class LogsDataProcessor:
         if dataset == Dataset.HELPDESK.value:
             df = self._load_helpdesk_df(sort_temporally=sort_temporally)
             self._extract_logs_metadata(df)
-        if dataset == Dataset.BPIC2017.value:
+        elif dataset == Dataset.BPIC2017.value:
             df = self._load_bpic_df(sort_temporally=sort_temporally)
             self._extract_logs_metadata(df)
-        if dataset == Dataset.BPIC2011.value:
+        elif dataset == Dataset.BPIC2011.value:
             df = self._load_bpic_df(sort_temporally=sort_temporally)
             self._extract_logs_metadata(df)
-        if dataset == Dataset.BPIC2012.value:
+        elif dataset == Dataset.BPIC2012.value:
             df = self._load_bpic_df(sort_temporally=sort_temporally)
             self._extract_logs_metadata(df)
-
+        elif dataset in (Dataset.BPIC2015.value, Dataset.BPIC2015M1.value, Dataset.BPIC2015M2.value, Dataset.BPIC2015M3.value, Dataset.BPIC2015M4.value, Dataset.BPIC2015M5.value):
+            df = self._load_bpic_df(sort_temporally=sort_temporally)
+            self._extract_logs_metadata(df)
         else:
             raise ValueError("Invalid dataset.")
 
@@ -256,6 +265,33 @@ class LogsDataProcessor:
             self._process_outcome_oriented(df)
         else:
             raise ValueError("Invalid task.")
+    
+    def get_minority_and_majority(self, df: pd.DataFrame, target: str):
+        minorities = []
+        
+        majority_length = df['outcome'].value_counts()[0]
+        majority_label = df.groupby('outcome').size().idxmax()
+
+        df.groupby('outcome').apply(lambda x: minorities.append(x.name) if len(x) < majority_length*0.8 else None)
+
+        return minorities, majority_label
+    
+    def upsample_dataset(self, df, minority_classes, majority_class, target):
+        majority_class = df[df[target] == majority_class]
+        max_length = len(majority_class)
+
+        for minority_class in minority_classes:
+            n_samples = int(max_length * 0.6)
+            minority_class = df[df[target] == minority_class]
+
+            upsampled_minority = resample(minority_class,
+                                replace=True,
+                                n_samples=n_samples,
+                                random_state=42)
+        
+            majority_class = pd.concat([majority_class, upsampled_minority])
+        
+        return majority_class
 
     def _process_outcome_oriented(self, df):
         x_train, y_train, x_test, y_test = [], [], [], []
@@ -277,16 +313,20 @@ class LogsDataProcessor:
             previous_prefixes = df.loc[prefix_indexes, column_activity].tolist()
 
             for i in range(len(previous_prefixes)):
-                row = {
-                    "case_id": case_id,
-                    "prefix": " ".join(previous_prefixes[:i + 1]),
-                    "k": i + 1,
-                    "outcome": outcome_label
-                }
-
-                rows.append(row)
+                if i <= 20:
+                    row = {
+                        "case_id": case_id,
+                        "prefix": " ".join(previous_prefixes[:i + 1]),
+                        "k": i + 1,
+                        "outcome": str(outcome_label.split('-')[0])
+                    }
+                    
+                    rows.append(row)
 
         df_return = df_return._append(rows, ignore_index=True)
+
+        # minorities, majority_label = self.get_minority_and_majority(df_return, 'outcome')
+        # df_return = self.upsample_dataset(df_return, minorities, majority_label, 'outcome')
 
         train_oo = df_return[:int(len(df_return)*0.8)]
         test_oo = df_return[int(len(df_return)*0.8) + 1:]
@@ -299,3 +339,5 @@ class LogsDataProcessor:
         test_oo.to_csv(f"{self._dir_path}/{Task.OUTCOME_ORIENTED.value}_test.csv", index=False)
 
         return x_train, y_train, x_test, y_test
+
+

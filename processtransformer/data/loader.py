@@ -143,7 +143,10 @@ class LogsDataLoader:
         # token_x = np.array(token_x, dtype = np.float32)
 
         token_y = list()
+        
         for _y in y:
+            if isinstance(_y, np.int64):
+                _y = str(_y).zfill(2)
             token_y.append(y_word_dict[_y])
         # token_y = np.array(token_y, dtype = np.float32)
 

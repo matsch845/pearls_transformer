@@ -1,0 +1,220 @@
+{
+    "version": "0.2.0",
+    "configurations": [
+      {
+        "name": "2011_data_processing",
+        "type": "python",
+        "request": "launch",
+        "program": "${workspaceFolder}/data_processing.py",
+        "console": "integratedTerminal",
+        "args": [
+          "--dataset=BPIC2011",
+          "--task=outcome_oriented",
+          "--raw_log_file=./datasets/BPIC2011/BPIC2011.csv"
+        ]
+      },
+      {
+        "name": "2011_outcome_oriented.py",
+        "type": "python",
+        "request": "launch",
+        "program": "${workspaceFolder}/outcome_oriented.py",
+        "console": "integratedTerminal",
+        "args": [
+          "--dataset=BPIC2011",
+          "--task=outcome_oriented",
+          "--epochs=10"
+        ]
+      },
+      {
+        "name": "2012_data_processing",
+        "type": "python",
+        "request": "launch",
+        "program": "${workspaceFolder}/data_processing.py",
+        "console": "integratedTerminal",
+        "args": [
+          "--dataset=BPIC2012",
+          "--task=outcome_oriented",
+          "--raw_log_file=./datasets/BPIC2012/BPIC2012.csv"
+        ]
+      },
+      {
+        "name": "2012_outcome_oriented.py",
+        "type": "python",
+        "request": "launch",
+        "program": "${workspaceFolder}/outcome_oriented.py",
+        "console": "integratedTerminal",
+        "args": [
+          "--dataset=BPIC2012",
+          "--task=outcome_oriented",
+          "--epochs=10"
+        ]
+      },
+      {
+        "name": "helpdesk_data_processing",
+        "type": "python",
+        "request": "launch",
+        "program": "${workspaceFolder}/data_processing.py",
+        "console": "integratedTerminal",
+        "args": [
+          "--dataset=helpdesk",
+          "--task=outcome_oriented"
+        ]
+      },
+      {
+        "name": "helpdesk_outcome_oriented.py",
+        "type": "python",
+        "request": "launch",
+        "program": "${workspaceFolder}/outcome_oriented.py",
+        "console": "integratedTerminal",
+        "args": [
+          "--dataset=helpdesk",
+          "--task=outcome_oriented",
+          "--epochs=10"
+        ]
+      },
+      {
+        "name": "2017_data_processing",
+        "type": "python",
+        "request": "launch",
+        "program": "${workspaceFolder}/data_processing.py",
+        "console": "integratedTerminal",
+        "args": [
+          "--dataset=BPIC2017",
+          "--task=outcome_oriented",
+          "--raw_log_file=./datasets/BPIC2017/BPIC2017.csv"
+        ]
+      },
+      {
+        "name": "2017_outcome_oriented.py",
+        "type": "python",
+        "request": "launch",
+        "program": "${workspaceFolder}/outcome_oriented.py",
+        "console": "integratedTerminal",
+        "args": [
+          "--dataset=BPIC2017",
+          "--task=outcome_oriented",
+          "--epochs=10"
+        ]
+      },
+      {
+        "name": "2015M1_data_processing",
+        "type": "python",
+        "request": "launch",
+        "program": "${workspaceFolder}/data_processing.py",
+        "console": "integratedTerminal",
+        "args": [
+          "--dataset=BPIC2015M1",
+          "--task=outcome_oriented",
+          "--raw_log_file=./datasets/BPIC2015M1/BPIC2015M1.csv"
+        ]
+      },
+      {
+        "name": "2015M1_outcome_oriented.py",
+        "type": "python",
+        "request": "launch",
+        "program": "${workspaceFolder}/outcome_oriented.py",
+        "console": "integratedTerminal",
+        "args": [
+          "--dataset=BPIC2015M1",
+          "--task=outcome_oriented",
+          "--epochs=10"
+        ]
+      },
+      {
+        "name": "2015M2_data_processing",
+        "type": "python",
+        "request": "launch",
+        "program": "${workspaceFolder}/data_processing.py",
+        "console": "integratedTerminal",
+        "args": [
+          "--dataset=BPIC2015M2",
+          "--task=outcome_oriented",
+          "--raw_log_file=./datasets/BPIC2015M2/BPIC2015M2.csv"
+        ]
+      },
+      {
+        "name": "2015M2_outcome_oriented.py",
+        "type": "python",
+        "request": "launch",
+        "program": "${workspaceFolder}/outcome_oriented.py",
+        "console": "integratedTerminal",
+        "args": [
+          "--dataset=BPIC2015M2",
+          "--task=outcome_oriented",
+          "--epochs=10"
+        ]
+      },
+      {
+        "name": "2015M3_data_processing",
+        "type": "python",
+        "request": "launch",
+        "program": "${workspaceFolder}/data_processing.py",
+        "console": "integratedTerminal",
+        "args": [
+          "--dataset=BPIC2015M3",
+          "--task=outcome_oriented",
+          "--raw_log_file=./datasets/BPIC2015M3/BPIC2015M3.csv"
+        ]
+      },
+      {
+        "name": "2015M3_outcome_oriented.py",
+        "type": "python",
+        "request": "launch",
+        "program": "${workspaceFolder}/outcome_oriented.py",
+        "console": "integratedTerminal",
+        "args": [
+          "--dataset=BPIC2015M3",
+          "--task=outcome_oriented",
+          "--epochs=10"
+        ]
+      },
+      {
+        "name": "2015M4_data_processing",
+        "type": "python",
+        "request": "launch",
+        "program": "${workspaceFolder}/data_processing.py",
+        "console": "integratedTerminal",
+        "args": [
+          "--dataset=BPIC2015M4",
+          "--task=outcome_oriented",
+          "--raw_log_file=./datasets/BPIC2015M4/BPIC2015M4.csv"
+        ]
+      },
+      {
+        "name": "2015M4_outcome_oriented.py",
+        "type": "python",
+        "request": "launch",
+        "program": "${workspaceFolder}/outcome_oriented.py",
+        "console": "integratedTerminal",
+        "args": [
+          "--dataset=BPIC2015M4",
+          "--task=outcome_oriented",
+          "--epochs=10"
+        ]
+      },
+      {
+        "name": "2015M5_data_processing",
+        "type": "python",
+        "request": "launch",
+        "program": "${workspaceFolder}/data_processing.py",
+        "console": "integratedTerminal",
+        "args": [
+          "--dataset=BPIC2015M5",
+          "--task=outcome_oriented",
+          "--raw_log_file=./datasets/BPIC2015M5/BPIC2015M5.csv"
+        ]
+      },
+      {
+        "name": "2015M5_outcome_oriented.py",
+        "type": "python",
+        "request": "launch",
+        "program": "${workspaceFolder}/outcome_oriented.py",
+        "console": "integratedTerminal",
+        "args": [
+          "--dataset=BPIC2015M5",
+          "--task=outcome_oriented",
+          "--epochs=10"
+        ]
+      }
+    ]
+  }

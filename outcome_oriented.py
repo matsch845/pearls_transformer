@@ -64,7 +64,8 @@ if __name__ == "__main__":
     transformer_model = transformer.get_outcome_oriented_model(
         max_case_length=max_case_length,
         vocab_size=vocab_size,
-        output_dim=num_output)
+        output_dim=num_output,
+        embed_dim=512)
 
     transformer_model.compile(optimizer=tf.keras.optimizers.Adam(args.learning_rate),
                               loss=tf.keras.losses.SparseCategoricalCrossentropy(from_logits=True),
@@ -78,12 +79,13 @@ if __name__ == "__main__":
 
     transformer_model.fit(train_token_x, train_token_y,
                           epochs=args.epochs, batch_size=args.batch_size,
-                          shuffle=True, verbose=1, callbacks=[model_checkpoint_callback])
+                          shuffle=True, verbose='auto', callbacks=[model_checkpoint_callback])
 
     # Evaluate over all the prefixes (k) and save the results
     k, accuracies, fscores, precisions, recalls = [], [], [], [], []
     for i in range(max_case_length):
-        test_data_subset = test_df[test_df["k"] == i]
+        # test_data_subset = test_df[test_df["k"] == i]
+        test_data_subset = test_df
         if len(test_data_subset) > 0:
             test_token_x, test_token_y = data_loader.prepare_data_outcome_oriented(test_data_subset,
                                                                                 x_word_dict, y_word_dict,
