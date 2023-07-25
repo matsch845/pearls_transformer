@@ -35,6 +35,11 @@ parser.add_argument("--sort_temporally",
     default=False, 
     help="sort cases by timestamp")
 
+parser.add_argument("--new_approach", 
+    type=bool, 
+    default=False, 
+    help="sort cases by timestamp")
+
 args = parser.parse_args()
 
 if __name__ == "__main__": 
@@ -45,7 +50,7 @@ if __name__ == "__main__":
         filepath=args.raw_log_file, 
         columns = ["Case ID", "Activity", "Complete Timestamp"], #["case:concept:name", "concept:name", "time:timestamp"], 
         dir_path=args.dir_path, pool = 1) #changed from 4 to 1
-    data_processor.process_logs(task=args.task, dataset=args.dataset, sort_temporally= args.sort_temporally)
+    data_processor.process_logs(task=args.task, dataset=args.dataset, sort_temporally= args.sort_temporally, new_preprocessing=args.new_approach)
     end = time.time()
     print(f"Total processing time: {end - start}")
 

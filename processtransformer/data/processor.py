@@ -8,6 +8,8 @@ import random
 from multiprocessing import Pool
 from sklearn.utils import resample
 
+from sklearn.model_selection import train_test_split
+
 from ..constants import Task, Dataset
 
 
@@ -58,9 +60,10 @@ class LogsDataProcessor:
         df["case:concept:name"] = df["case:concept:name"].apply(lambda x: str(x)).str.replace(" ", "-")
         df["case:concept:name"] = df["case:concept:name"].apply(lambda x: str(x)).str.replace("_", "-")
 
-        df["concept:name"] = df["concept:name"].apply(lambda x: str(x)).str.lower()
-        df["concept:name"] = df["concept:name"].apply(lambda x: str(x)).str.replace(" ", "-")
-        df["concept:name"] = df["concept:name"].apply(lambda x: str(x)).str.replace("_", "-")
+        event_col = self.get_event_column_name()
+
+        df[event_col] = df[event_col].apply(lambda x: str(x)).str.lower()
+        df[event_col] = df[event_col].apply(lambda x: '_'.join(str(x).split('_')[:2]))
 
         df["time:timestamp"] = df["time:timestamp"].str.replace("/", "-")
         df["time:timestamp"] = df["time:timestamp"].apply(lambda x: x.split('+')[0])
@@ -79,7 +82,7 @@ class LogsDataProcessor:
 
     def _extract_logs_metadata(self, df):
         keys = ["[PAD]", "[UNK]"]
-        activities = list(df["concept:name"].unique())
+        activities = list(df["action_code"].unique())
         keys.extend(activities)
         val = range(len(keys))
 
@@ -229,7 +232,8 @@ class LogsDataProcessor:
 
     def process_logs(self, task, dataset,
                      sort_temporally=False,
-                     train_test_ratio=0.80):
+                     train_test_ratio=0.80,
+                     new_preprocessing = False):
 
         self.dataset = dataset
 
@@ -262,7 +266,10 @@ class LogsDataProcessor:
         elif task == Task.REMAINING_TIME:
             self._process_remaining_time(df, train_list, test_list)
         elif task == Task.OUTCOME_ORIENTED:
-            self._process_outcome_oriented(df)
+            if new_preprocessing:
+                self._process_outcome_oriented_new(df)
+            else:
+                self._process_outcome_oriented(df)
         else:
             raise ValueError("Invalid task.")
     
@@ -281,7 +288,7 @@ class LogsDataProcessor:
         max_length = len(majority_class)
 
         for minority_class in minority_classes:
-            n_samples = int(max_length * 0.6)
+            n_samples = int(max_length * 1.0)
             minority_class = df[df[target] == minority_class]
 
             upsampled_minority = resample(minority_class,
@@ -298,7 +305,7 @@ class LogsDataProcessor:
         df_return = pd.DataFrame(columns=["case_id", "prefix", "k", "outcome"])
 
         column_case_id = 'case:concept:name'
-        column_activity = 'concept:name'
+        column_activity = self.get_event_column_name()
 
         case_groups = df.groupby([column_case_id], axis=0, as_index=False).groups
 
@@ -328,16 +335,69 @@ class LogsDataProcessor:
         # minorities, majority_label = self.get_minority_and_majority(df_return, 'outcome')
         # df_return = self.upsample_dataset(df_return, minorities, majority_label, 'outcome')
 
-        train_oo = df_return[:int(len(df_return)*0.8)]
-        test_oo = df_return[int(len(df_return)*0.8) + 1:]
-
-        eval_dict = df_return.groupby(['outcome'], axis=0, as_index=False).groups
-        for e in eval_dict:
-            print('label \'{}\': {} records'.format(e, len(eval_dict[e])))
+        train_oo, test_oo = train_test_split(df_return, test_size=0.2, random_state=25)
 
         train_oo.to_csv(f"{self._dir_path}/{Task.OUTCOME_ORIENTED.value}_train.csv", index=False)
         test_oo.to_csv(f"{self._dir_path}/{Task.OUTCOME_ORIENTED.value}_test.csv", index=False)
 
         return x_train, y_train, x_test, y_test
 
+    def _process_outcome_oriented_new(self, df):
+        x_train, y_train, x_test, y_test = [], [], [], []
+        df_return = pd.DataFrame(columns=["case_id", "prefix", "previous", "k", "outcome"])
 
+        column_case_id = 'case:concept:name'
+        column_activity = self.get_event_column_name()
+
+        case_groups = df.groupby([column_case_id], axis=0, as_index=False).groups
+
+        rows = []
+
+        for case, prefix_indexes in case_groups.items():
+            outcome_of_case_index = prefix_indexes[-1]
+            outcome_of_case = df.loc[[outcome_of_case_index]]
+            outcome_label = outcome_of_case[column_activity].iloc[0]
+            case_id = outcome_of_case[column_case_id].iloc[0]
+
+            previous_prefixes = df.loc[prefix_indexes, column_activity].tolist()
+
+            for i in range(len(previous_prefixes)):
+                if i <= 20:
+                    row = {
+                        "case_id": case_id,
+                        "prefix": " ".join(previous_prefixes[:i + 1]),
+                        #"next": previous_prefixes[i + 1] if i <= len(previous_prefixes) - 2 else "END",
+                        "previous": previous_prefixes[i - 1] if i > 0 else "START",
+                        #"next2": previous_prefixes[i + 2] if i <= len(previous_prefixes) - 3 else "END",
+                        "previous2": previous_prefixes[i - 2] if i > 1 else "START",
+                        "k": i + 1,
+                        "outcome": str(outcome_label.split('-')[0])
+                    }
+                    
+                    rows.append(row)
+
+        df_return = df_return._append(rows, ignore_index=True)
+
+        prefix_dummies = df_return['prefix'].str.get_dummies(sep=' ')
+
+        previous_next_diummies = pd.get_dummies(data=df_return, columns=['previous', 'previous2'])
+        previous_next_diummies.drop(columns=['case_id', 'prefix', 'k', 'outcome'], inplace=True)
+
+        df_return = pd.concat([df_return, prefix_dummies], axis=1)
+        df_return = pd.concat([df_return, previous_next_diummies], axis=1)
+
+        minorities, majority_label = self.get_minority_and_majority(df_return, 'outcome')
+        df_return = self.upsample_dataset(df_return, minorities, majority_label, 'outcome')
+
+        train_oo, test_oo = train_test_split(df_return, test_size=0.2, random_state=25)
+
+        train_oo.to_csv(f"{self._dir_path}/{Task.OUTCOME_ORIENTED.value}_train.csv", index=False)
+        test_oo.to_csv(f"{self._dir_path}/{Task.OUTCOME_ORIENTED.value}_test.csv", index=False)
+
+        return x_train, y_train, x_test, y_test
+    
+    def get_event_column_name(self):
+        if "2015M" in self._filepath:
+            return 'action_code'
+        
+        return 'concept:name'

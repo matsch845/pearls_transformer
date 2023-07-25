@@ -55,7 +55,7 @@ if __name__ == "__main__":
 
     (train_df, test_df, x_word_dict, y_word_dict, max_case_length,
      vocab_size, num_output) = data_loader.load_data(args.task)
-
+    
     # Prepare training examples for next time prediction task
     train_token_x, train_token_y = data_loader.prepare_data_outcome_oriented(train_df,
         x_word_dict, y_word_dict, max_case_length)

@@ -158,6 +158,7 @@ class LogsDataLoader:
 
         return token_x, token_y
 
+
     def get_max_case_length(self, train_x):
         train_token_x = list()
         for _x in train_x:
@@ -179,7 +180,8 @@ class LogsDataLoader:
 
         x_word_dict = metadata["x_word_dict"]
         y_word_dict = metadata["y_word_dict"]
-        max_case_length = self.get_max_case_length(train_df["prefix"].values)
+        # max_case_length = self.get_max_case_length(train_df["prefix"].values)
+        max_case_length = 20
         vocab_size = len(x_word_dict) 
         total_classes = len(y_word_dict)
 

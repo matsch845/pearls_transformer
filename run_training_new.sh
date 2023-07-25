@@ -1,0 +1,9 @@
+nohup python3 ./outcome_oriented_new.py --dataset=BPIC2015M1 --epochs=10 &> ./oo_results/10/nohup_new_BPIC2015M1_10e.out &
+nohup python3 ./outcome_oriented_new.py --dataset=BPIC2015M2 --epochs=10 &> ./oo_results/10/nohup_new_BPIC2015M2_10e.out &
+nohup python3 ./outcome_oriented_new.py --dataset=BPIC2015M3 --epochs=10 &> ./oo_results/10/nohup_new_BPIC2015M3_10e.out &
+nohup python3 ./outcome_oriented_new.py --dataset=BPIC2015M4 --epochs=10 &> ./oo_results/10/nohup_new_BPIC2015M4_10e.out &
+nohup python3 ./outcome_oriented_new.py --dataset=BPIC2015M5 --epochs=10 &> ./oo_results/10/nohup_new_BPIC2015M5_10e.out &
+nohup python3 ./outcome_oriented_new.py --dataset=BPIC2012 --epochs=10 &> ./oo_results/10/nohup_new_BPIC2012_10e.out &
+nohup python3 ./outcome_oriented_new.py --dataset=BPIC2011 --epochs=10 &> ./oo_results/10/nohup_new_BPIC2011_10e.out &
+nohup python3 ./outcome_oriented_new.py --dataset=BPIC2017 --epochs=10 &> ./oo_results/10/nohup_new_BPIC2017_10e.out &
+nohup python3 ./outcome_oriented_new.py --dataset=helpdesk --epochs=10 &> ./oo_results/10/nohup_new_helpdesk_10e.out &

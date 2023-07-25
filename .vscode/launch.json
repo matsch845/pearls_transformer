@@ -109,6 +109,19 @@
         ]
       },
       {
+        "name": "2015M1_new_data_processing",
+        "type": "python",
+        "request": "launch",
+        "program": "${workspaceFolder}/data_processing.py",
+        "console": "integratedTerminal",
+        "args": [
+          "--dataset=BPIC2015M1",
+          "--task=outcome_oriented",
+          "--raw_log_file=./datasets/BPIC2015M1/BPIC2015M1.csv",
+          "--new_approach=True"
+        ]
+      },
+      {
         "name": "2015M1_outcome_oriented.py",
         "type": "python",
         "request": "launch",
@@ -117,7 +130,17 @@
         "args": [
           "--dataset=BPIC2015M1",
           "--task=outcome_oriented",
-          "--epochs=10"
+          "--epochs=1",
+        ]
+      },
+      {
+        "name": "2015M1_new_outcome_oriented.py",
+        "type": "python",
+        "request": "launch",
+        "program": "${workspaceFolder}/outcome_oriented_new.py",
+        "console": "integratedTerminal",
+        "args": [
+          "--dataset=BPIC2015M1"
         ]
       },
       {
