@@ -1,3 +1,44 @@
+# Transformer Models for Outcome-Oriented Predictive Process Monitoring
+
+This fork adds the outcome-oriented perspective to the other approaches already implemented.
+It incorporates a transformer architecture and data pre-processing as suggested by the original repository.
+Additionally, a slightly different transformer model with an different pre-processing (bag-of-words model with 2 step lead) is implemented (`outcome_oriented_new.py`).
+
+## How to run
+
+0. `pip install -r requirements.txt`
+1. Download the datasets cited in this repository (Section Datasets).
+2. Place the `.xes` files in the corresponding folders.
+3. Make sure that the files in the dataset folders have exactly the same naming as the folders where they are placed in (e.g., `BPIC2015M1.xes``).
+4. `cd datasets`
+5. `python convert_to_csv.py`
+6. `cd ..`
+7. `./run_data_processing.sh`
+8. `./run_training.sh`
+9. `./run_data_processing_new.sh`
+10. `./run_training_new.sh`
+
+## Datasets
+
+Those datasets are used to benchmark transformer models to predict the outcome of a case.
+
+- BPIC 2011: https://data.4tu.nl/articles/dataset/Real-life_event_logs_-_Hospital_log/12716513/1
+
+- BPIC 2012: https://data.4tu.nl/articles/dataset/BPI_Challenge_2012/12689204/1
+
+- BPIC 2015_1: https://data.4tu.nl/articles/dataset/BPI_Challenge_2015_Municipality_1/12709154/1
+
+- BPIC 2015_5: https://data.4tu.nl/articles/dataset/BPI_Challenge_2015_Municipality_5/12713285/1
+
+- BPIC 2015_2: https://data.4tu.nl/articles/dataset/BPI_Challenge_2015_Municipality_2/12697349/1
+
+- BPIC 2015_3: https://data.4tu.nl/articles/dataset/BPI_Challenge_2015_Municipality_3/12718370/1
+
+- BPIC 2015_4 https://data.4tu.nl/articles/dataset/BPI_Challenge_2015_Municipality_4/12697898/1
+
+- BPIC 2017: https://data.4tu.nl/articles/dataset/BPI_Challenge_2017/12696884/1
+
+
 ## ProcessTransformer: Predictive Business Process Monitoring with Transformer Network
 
 ![header image](https://github.com/Zaharah/processtransformer/blob/main/pt.JPG)
@@ -65,117 +106,4 @@ Zaharah A. Bukhsh, Aaqib Saeed, & Remco M. Dijkman. (2021). ["ProcessTransformer
       archivePrefix={arXiv},
       primaryClass={cs.LG}
 }
-```
-
-# Transformer Models for Outcome-Oriented Predictive Process Monitoring
-
-This fork adds the outcome-oriented perspective to the other approaches already implemented.
-
-## How to run
-
-0. `pip install -r requirements.txt`
-1. Download the datasets cited in this repository (Section Datasets).
-2. Place the `.xes` files in the corresponding folders.
-3. Make sure that the files in the dataset folders have exactly the same naming as the folders where they are placed in (e.g., `BPIC2015M1.xes``).
-4. `cd datasets`
-5. `python convert_to_csv.py`
-6. `cd ..`
-7. `./run_data_processing.sh`
-8. `./run_training.sh`
-9. `./run_data_processing_new.sh`
-10. `./run_training_new.sh`
-
-## Datasets
-
-Those datasets are used to benchmark transformer models to predict the outcome of a case.
-
-```
-@misc{bpic_2011,
-  doi = {10.4121/uuid:d9769f3d-0ab0-4fb8-803b-0d1120ffcf54},
-  url = {https://data.4tu.nl/articles/dataset/Real-life_event_logs_-_Hospital_log/12716513/1},
-  author = {van Dongen, Boudewijn},
-  keywords = {000 Computer science, knowledge &amp; systems, IEEE Task Force on Process Mining, real life event logs},
-  title = {Real-life event logs - Hospital log},
-  publisher = {Eindhoven University of Technology},
-  year = {2011},
-  copyright = {4TU General Terms of Use},
-}
-
-@misc{bpic_2012,
-  doi = {10.4121/uuid:3926db30-f712-4394-aebc-75976070e91f},
-  url = {https://data.4tu.nl/articles/dataset/BPI_Challenge_2012/12689204/1},
-  author = {van Dongen, Boudewijn},
-  keywords = {000 Computer science, knowledge &amp; systems, Business Process Intelligence (BPI), IEEE Task Force on Process Mining, real life event logs},
-  title = {BPI Challenge 2012},
-  publisher = {Eindhoven University of Technology},
-  year = {2012},
-  copyright = {4TU General Terms of Use},
-}
-
-@misc{bpic_2015_1,
-  doi = {10.4121/uuid:a0addfda-2044-4541-a450-fdcc9fe16d17},
-  url = {https://data.4tu.nl/articles/dataset/BPI_Challenge_2015_Municipality_1/12709154/1},
-  author = {van Dongen, Boudewijn},
-  keywords = {BPI Challenge 2015, Business Process Intelligence (BPI), IEEE Task Force on Process Mining, real life event logs},
-  title = {BPI Challenge 2015 Municipality 1},
-  publisher = {Eindhoven University of Technology},
-  year = {2015},
-  copyright = {4TU General Terms of Use},
-}
-
-@misc{bpic_2015_5,
-  doi = {10.4121/uuid:b32c6fe5-f212-4286-9774-58dd53511cf8},
-  url = {https://data.4tu.nl/articles/dataset/BPI_Challenge_2015_Municipality_5/12713285/1},
-  author = {van Dongen, Boudewijn},
-  keywords = {BPI Challenge 2015, Business Process Intelligence (BPI), IEEE Task Force on Process Mining, real life event logs},
-  title = {BPI Challenge 2015 Municipality 5},
-  publisher = {Eindhoven University of Technology},
-  year = {2015},
-  copyright = {4TU General Terms of Use},
-}
-
-@misc{bpic_2015_2,
-  doi = {10.4121/uuid:63a8435a-077d-4ece-97cd-2c76d394d99c},
-  url = {https://data.4tu.nl/articles/dataset/BPI_Challenge_2015_Municipality_2/12697349/1},
-  author = {van Dongen, Boudewijn},
-  keywords = {BPI Challenge 2015, Business Process Intelligence (BPI), IEEE Task Force on Process Mining, real life event logs},
-  title = {BPI Challenge 2015 Municipality 2},
-  publisher = {Eindhoven University of Technology},
-  year = {2015},
-  copyright = {4TU General Terms of Use},
-}
-
-@misc{bpic_2015_3,
-  doi = {10.4121/uuid:ed445cdd-27d5-4d77-a1f7-59fe7360cfbe},
-  url = {https://data.4tu.nl/articles/dataset/BPI_Challenge_2015_Municipality_3/12718370/1},
-  author = {van Dongen, Boudewijn},
-  keywords = {BPI Challenge 2015, Business Process Intelligence (BPI), IEEE Task Force on Process Mining, real life event logs},
-  title = {BPI Challenge 2015 Municipality 3},
-  publisher = {Eindhoven University of Technology},
-  year = {2015},
-  copyright = {4TU General Terms of Use},
-}
-
-@misc{bpic_2015_4,
-  doi = {10.4121/uuid:679b11cf-47cd-459e-a6de-9ca614e25985},
-  url = {https://data.4tu.nl/articles/dataset/BPI_Challenge_2015_Municipality_4/12697898/1},
-  author = {van Dongen, Boudewijn},
-  keywords = {BPI Challenge 2015, Business Process Intelligence (BPI), IEEE Task Force on Process Mining, real life event logs},
-  title = {BPI Challenge 2015 Municipality 4},
-  publisher = {Eindhoven University of Technology},
-  year = {2015},
-  copyright = {4TU General Terms of Use},
-}
-
-@misc{bpic_2017,
-  doi = {10.4121/uuid:5f3067df-f10b-45da-b98b-86ae4c7a310b},
-  url = {https://data.4tu.nl/articles/dataset/BPI_Challenge_2017/12696884/1},
-  author = {van Dongen, Boudewijn},
-  keywords = {000 Computer science, knowledge &amp; systems, Business Process Intelligence (BPI), IEEE Task Force on Process Mining, real life event logs},
-  title = {BPI Challenge 2017},
-  publisher = {Eindhoven University of Technology},
-  year = {2017},
-  copyright = {4TU General Terms of Use},
-}
-
 ```
