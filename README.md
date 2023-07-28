@@ -2,28 +2,28 @@
 
 This fork adds the outcome-oriented perspective to the other approaches already implemented.
 It incorporates a transformer architecture and data pre-processing as suggested by the original repository.
-Additionally, a slightly different transformer model with an different pre-processing (bag-of-words model with 2 step lead) is implemented (`outcome_oriented_new.py`).
+Additionally, a slightly different transformer model with a different pre-processing (bag-of-words model with 2-step lag) is implemented (`outcome_oriented_new.py`).
 
 ## How to run
 
 0. `pip install -r requirements.txt`
 1. Download the datasets cited in this repository (Section Datasets).
 2. Place the `.xes` files in the corresponding folders.
-3. Make sure that the files in the dataset folders have exactly the same naming as the folders where they are placed in (e.g., `BPIC2015M1.xes``).
+3. Make sure that the files in the dataset folders have exactly the same naming as the folders where they are placed in (e.g., `BPIC2015M1.xes` in the folder `BPIC2015M1`).
 4. `cd datasets`
 5. `python convert_to_csv.py`
 6. `cd ..`
-7. `./run_data_processing.sh`
-8. `./run_training.sh`
-9. `./run_data_processing_new.sh`
-10. `./run_training_new.sh`
+7. `./run_data_processing.sh` (transformer model of fork)
+8. `./run_training.sh` (transformer model of the fork)
+9. `./run_data_processing_new.sh` (additionally implemented transformer model)
+10. `./run_training_new.sh` (additionally implemented transformer model)
 
 ## Datasets
 
 Those datasets are used to benchmark transformer models to predict the outcome of a case.
 
 - BPIC 2011: https://data.4tu.nl/articles/dataset/Real-life_event_logs_-_Hospital_log/12716513/1
-
+- 
 - BPIC 2012: https://data.4tu.nl/articles/dataset/BPI_Challenge_2012/12689204/1
 
 - BPIC 2015_1: https://data.4tu.nl/articles/dataset/BPI_Challenge_2015_Municipality_1/12709154/1
