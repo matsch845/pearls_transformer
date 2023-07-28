@@ -23,7 +23,7 @@ Additionally, a slightly different transformer model with a different pre-proces
 Those datasets are used to benchmark transformer models to predict the outcome of a case.
 
 - BPIC 2011: https://data.4tu.nl/articles/dataset/Real-life_event_logs_-_Hospital_log/12716513/1
-- 
+
 - BPIC 2012: https://data.4tu.nl/articles/dataset/BPI_Challenge_2012/12689204/1
 
 - BPIC 2015_1: https://data.4tu.nl/articles/dataset/BPI_Challenge_2015_Municipality_1/12709154/1
